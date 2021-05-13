@@ -1,6 +1,0 @@
-{
-	"remender": "rattman.c@gmail.com sipedeshazloya@gmail.com",
-	"affair": "este es un texto de ejemplo",
-	"message": "Este es el cuerpo del mensaje",
-	"number_copy": 3
-}

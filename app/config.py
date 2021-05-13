@@ -1,1 +1,1 @@
-UPLOAD_DIRECTORY = "/files/api_uploaded_files"
+UPLOAD_DIRECTORY = "/my_files/api_uploaded_files"

@@ -1,11 +1,15 @@
+from app.process import process
 import os
 from flask import Flask, request, render_template, jsonify, send_from_directory, abort
 from app.config import UPLOAD_DIRECTORY
 from app.separator import separator
 from app.character import character
+import shutil
 
 # UPLOAD_DIRECTORY = "/project/api_uploaded_files"
 
+if not os.path.exists(UPLOAD_DIRECTORY):
+    os.makedirs(UPLOAD_DIRECTORY)
 
 
 app = Flask(__name__)
@@ -19,22 +23,26 @@ def index():
 
 @app.route('/',methods=['POST'])
 def email():
+    """capture request and precess data """
     sender = request.form['sender']
     copys = request.form['copys']
     message = request.form['message']
     other = request.form['other']
+    
 
     my_emails = []
     for item in separator(other):
-        my_emails.append(item)    
+        clean_item = character(str(item))
+        my_emails.append(clean_item)
 
-    # Return 201 CREATED
-    return f"{sender} {copys} {message} {my_emails}", 201
+    process(sender, my_emails, message, copys)
+    
+    return f'files generated', 201
     
 
 @app.route("/myFiles")
 def list_files():
-    """Endpoint to list files on the server."""
+    """Get list all files from the server."""
     files = []
     for filename in os.listdir(UPLOAD_DIRECTORY):
         path = os.path.join(UPLOAD_DIRECTORY, filename)
@@ -45,24 +53,13 @@ def list_files():
     })
 
 
-
 @app.route("/files/<path:path>")
 def get_file(path):
-    """Download a file."""
+    """Download a specific file."""
     return send_from_directory(UPLOAD_DIRECTORY, path, as_attachment=True)
 
 
- 
-@app.route("/files/<filename>", methods=["POST"])
-def post_file(filename):
-    """Upload a file."""
-
-    if "/" in filename:
-        # Return 400 BAD REQUEST
-        abort(400, "no subdirectories allowed")
-
-    with open(os.path.join(UPLOAD_DIRECTORY, filename), "wb") as fp:
-        fp.write(request.data)
-
-    # Return 201 CREATED
-    return "", 201
+@app.route('/delete')
+def delete():
+    shutil.rmtree(UPLOAD_DIRECTORY)
+    return 'all directory deleted, please generate news files in / route for query myFiles'
