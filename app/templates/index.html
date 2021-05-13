@@ -18,16 +18,16 @@
               <input type="email" name="sender" class="form-control" id="sender">
             </div>
             <div class="mb-3">
+                <label for="copys" class="form-label">Copys cantity </label>
+                <input type="text" name="copys" id="copys" onkeypress='return numbers(event)' class="form-control"/>
+            </div>
+            <div class="mb-3">
                 <label for="other" class="form-label">Others email address</label>
               <input type="text" name="other" class="form-control" id="other">
             </div>
             <div class="mb-3">
               <label for="message" class="form-label">Message</label>
               <textarea name="message" id="message" cols="30" rows="3" class="form-control"></textarea>              
-            </div>
-            <div class="mb-3">
-                <label for="number_copy" class="form-label">Copys</label>
-                <input type="text" id="number_copy" name="number_copy" onkeypress='return numbers(event)' class="form-control" />
             </div>
             <button type="submit" class="btn btn-primary">Send</button>
           </form>

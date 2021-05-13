@@ -1,6 +1,7 @@
 import os
 from flask import Flask, request, render_template, jsonify, send_from_directory, abort
 from app.config import UPLOAD_DIRECTORY
+from app.separator import separator
 from app.character import character
 
 # UPLOAD_DIRECTORY = "/project/api_uploaded_files"
@@ -18,13 +19,17 @@ def index():
 
 @app.route('/',methods=['POST'])
 def email():
-    filename = request.form['other']
-    
-    
-    
+    sender = request.form['sender']
+    copys = request.form['copys']
+    message = request.form['message']
+    other = request.form['other']
+
+    my_emails = []
+    for item in separator(other):
+        my_emails.append(item)    
 
     # Return 201 CREATED
-    return f"{filename}", 201
+    return f"{sender} {copys} {message} {my_emails}", 201
     
 
 @app.route("/myFiles")
